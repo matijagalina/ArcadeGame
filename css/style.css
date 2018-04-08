@@ -1,3 +1,19 @@
 body {
     text-align: center;
 }
+
+.messageContainer {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#victoryModal {
+    position: absolute;
+    top: 30vh;
+}
+
+.btn {
+    appearance: none;    
+}
