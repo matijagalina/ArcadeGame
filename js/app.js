@@ -1,3 +1,4 @@
+// globally accesible variables
 const modal = document.getElementById('victoryModal');
 const modalBtn = document.getElementById('newGameBtn');
 
@@ -53,6 +54,7 @@ class Player {
         this.render();
     }
 
+    // constricts player movement inside game field
     handleBorders() {
         if (this.y < 0) {
             this.y = 404;
@@ -66,6 +68,7 @@ class Player {
         }
     }
 
+    // handles game behaviour when player arrive to the water block
     handleVictory() {
         modal.style.display = 'flex';
     }
@@ -78,10 +81,11 @@ class Player {
 const allEnemies = [];
 const player = new Player();
 
-
+// This restarts the game from inside victory dialog
 modalBtn.addEventListener('click', function () {
     modal.style.display = 'none';
 });
+
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function (e) {
