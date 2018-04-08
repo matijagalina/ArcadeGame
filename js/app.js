@@ -39,15 +39,29 @@ class Player {
     handleInput(key) {
         if (key === 'up') {
             this.y = this.y - 83;
+            if (this.y < 0) {
+                this.y = 404;
+            }
             this.render();
         } else if (key === 'down') {
             this.y = this.y + 83;
+            if (this.y > 404) {
+                this.y = 404;
+            }
             this.render();
         } else if (key === 'left') {
             this.x = this.x - 101;
+            console.log(`x = ${this.x}`);
+            if (this.x < 0) {
+                this.x = 0;
+            }
             this.render();
         } else if (key === 'right') {
             this.x = this.x + 101;
+            console.log(`x = ${this.x}`);
+            if (this.x > 404) {
+                this.x = 404;
+            }
             this.render();
         } 
     }
