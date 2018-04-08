@@ -15,5 +15,6 @@ body {
 }
 
 .btn {
-    appearance: none;    
+    appearance: none;
+    cursor: pointer;   
 }
