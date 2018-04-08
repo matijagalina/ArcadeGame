@@ -24,6 +24,8 @@ class Enemy {
 class Player {
     constructor() {
         this.sprite = 'images/char-boy.png';
+        this.x = 202;
+        this.y = 404;
     }
 
     update(dt) {
@@ -34,8 +36,20 @@ class Player {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 
-    handleInput() {
-
+    handleInput(key) {
+        if (key === 'up') {
+            this.y = this.y - 83;
+            this.render();
+        } else if (key === 'down') {
+            this.y = this.y + 83;
+            this.render();
+        } else if (key === 'left') {
+            this.x = this.x - 101;
+            this.render();
+        } else if (key === 'right') {
+            this.x = this.x + 101;
+            this.render();
+        } 
     }
 }
 
