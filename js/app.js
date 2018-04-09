@@ -2,9 +2,19 @@
 const modal = document.getElementById('victoryModal');
 const modalBtn = document.getElementById('newGameBtn');
 
+// helper functions
+function getRandomNum(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+let slow = getRandomNum(50, 100);
+let fast = getRandomNum(400, 700);
+
 class Enemy {
     constructor() {
         this.sprite = 'images/enemy-bug.png';
+        this.x = 0;
+        this.y = 62;
     }
 
     // Update the enemy's position, required method for game
@@ -13,6 +23,8 @@ class Enemy {
         // You should multiply any movement by the dt parameter
         // which will ensure the game runs at the same speed for
         // all computers.
+        this.x = this.x + (getRandomNum(slow, fast)) * dt;
+        this.handleBorders();
     }
 
     // Draw the enemy on the screen, required method for game
@@ -22,6 +34,15 @@ class Enemy {
 
     checkCollisions() {
 
+    }
+
+    // returns enemies to te start and assigns them a new speed
+    handleBorders() {
+        if (this.x > 404) {
+            this.x = 0;
+        }
+        slow = getRandomNum(10, 50);
+        fast = getRandomNum(100, 500);
     }
 }
 
@@ -77,8 +98,8 @@ class Player {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-
-const allEnemies = [];
+const enemyOne = new Enemy();
+const allEnemies = [enemyOne];
 const player = new Player();
 
 // This restarts the game from inside victory dialog
