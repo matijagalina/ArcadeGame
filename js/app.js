@@ -1,20 +1,26 @@
 // globally accesible variables
 const modal = document.getElementById('victoryModal');
 const modalBtn = document.getElementById('newGameBtn');
+const rowOne = 62;
+const rowTwo = 145;
+const rowThree = 228;
+const rows = [rowOne, rowTwo, rowThree];
 
 // helper functions
 function getRandomNum(min, max) {
-    return Math.random() * (max - min) + min;
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-let slow = getRandomNum(50, 100);
-let fast = getRandomNum(400, 700);
+let slow = getRandomNum(10, 50);
+let fast = getRandomNum(100, 500);
 
 class Enemy {
     constructor() {
         this.sprite = 'images/enemy-bug.png';
         this.x = 0;
-        this.y = 62;
+        this.y = this.appendToRow();
     }
 
     // Update the enemy's position, required method for game
@@ -40,9 +46,13 @@ class Enemy {
     handleBorders() {
         if (this.x > 404) {
             this.x = 0;
+            this.y = this.appendToRow();
         }
-        slow = getRandomNum(10, 50);
-        fast = getRandomNum(100, 500);
+    }
+
+    appendToRow() {
+        let row = rows[getRandomNum(0, 2)];
+        return row;
     }
 }
 
@@ -99,7 +109,9 @@ class Player {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 const enemyOne = new Enemy();
-const allEnemies = [enemyOne];
+const enemyTwo = new Enemy();
+const enemyThree = new Enemy();
+const allEnemies = [enemyOne, enemyTwo, enemyThree];
 const player = new Player();
 
 // This restarts the game from inside victory dialog
