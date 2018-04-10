@@ -7,6 +7,7 @@ const rowThree = 228;
 const rows = [rowOne, rowTwo, rowThree];
 
 // helper functions
+
 function getRandomNum(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -29,7 +30,8 @@ class Enemy {
         // You should multiply any movement by the dt parameter
         // which will ensure the game runs at the same speed for
         // all computers.
-        this.x = this.x + (getRandomNum(slow, fast)) * dt;
+        this.x = this.x + (this.calculateSpeed() * dt);
+        this.appendToRow();
         this.handleBorders();
     }
 
@@ -40,6 +42,11 @@ class Enemy {
 
     checkCollisions() {
 
+    }
+
+    calculateSpeed() {
+        let speed = (getRandomNum(slow, fast));
+        return speed;
     }
 
     // returns enemies to te start and assigns them a new speed
