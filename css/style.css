@@ -9,7 +9,7 @@ body {
     align-items: center;
 }
 
-#victoryModal {
+#modal {
     position: absolute;
     top: 30vh;
 }

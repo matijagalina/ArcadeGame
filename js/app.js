@@ -1,5 +1,6 @@
 // globally accesible variables
-const modal = document.getElementById('victoryModal');
+const modal = document.getElementById('modal');
+const modalTitle = document.querySelector('#modal h3');
 const modalBtn = document.getElementById('newGameBtn');
 const rowOne = 62;
 const rowTwo = 145;
@@ -15,7 +16,7 @@ function getRandomNum(min, max) {
 }
 
 let slow = getRandomNum(10, 50);
-let fast = getRandomNum(100, 500);
+let fast = getRandomNum(100, 200);
 
 class Enemy {
     constructor() {
@@ -31,17 +32,12 @@ class Enemy {
         // which will ensure the game runs at the same speed for
         // all computers.
         this.x = this.x + (this.calculateSpeed() * dt);
-        this.appendToRow();
         this.handleBorders();
     }
 
     // Draw the enemy on the screen, required method for game
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    }
-
-    checkCollisions() {
-
     }
 
     calculateSpeed() {
@@ -77,6 +73,7 @@ class Player {
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
         this.handleBorders();
+        this.checkCollision();
     }
 
     handleInput(key) {
@@ -108,7 +105,20 @@ class Player {
 
     // handles game behaviour when player arrive to the water block
     handleVictory() {
-        modal.style.display = 'flex';
+        modal.style.display = 'block';
+    }
+
+    handleCrash() {
+        modalTitle.innerHTML = 'YOU HAVE LOST!';
+        modal.style.display = 'block';
+    }
+
+    checkCollision() {
+        for (var i = 0; i < allEnemies.length; i++) {
+            if ((allEnemies[i].y === this.y - 10) && ((allEnemies[i].x > this.x - 70) && (allEnemies[i].x - this.x < 70) )) {
+                this.handleCrash();
+            }
+        }
     }
 }
 
