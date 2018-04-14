@@ -92,7 +92,6 @@ class Player {
     // constricts player movement inside game field
     handleBorders() {
         if (this.y < 0) {
-            this.y = 404;
             this.handleVictory();
         } else if (this.y > 404) {
             this.y = 404;
@@ -105,17 +104,27 @@ class Player {
 
     // handles game behaviour when player arrive to the water block
     handleVictory() {
+        modalTitle.innerHTML = 'YOU HAVE WON!';
         modal.style.display = 'block';
     }
 
     handleCrash() {
+        this.x = 202;
+        this.y = 404;
+        for (let i = 0; i < allEnemies.length; i++) {
+            allEnemies[i].x = 0;
+        }
+
         modalTitle.innerHTML = 'YOU HAVE LOST!';
         modal.style.display = 'block';
     }
 
     checkCollision() {
-        for (var i = 0; i < allEnemies.length; i++) {
-            if ((allEnemies[i].y === this.y - 10) && ((allEnemies[i].x > this.x - 70) && (allEnemies[i].x - this.x < 70) )) {
+        for (let i = 0; i < allEnemies.length; i++) {
+            if (
+                (allEnemies[i].y === this.y - 10) &&
+                ((allEnemies[i].x > this.x - 70) && (allEnemies[i].x - this.x < 70))
+            ) {
                 this.handleCrash();
             }
         }
@@ -134,12 +143,16 @@ const player = new Player();
 // This restarts the game from inside victory dialog
 modalBtn.addEventListener('click', function () {
     modal.style.display = 'none';
+    player.y = 404;
+    for (let i = 0; i < allEnemies.length; i++) {
+        allEnemies[i].x = 0;
+    }
 });
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function (e) {
-    var allowedKeys = {
+    const allowedKeys = {
         37: 'left',
         38: 'up',
         39: 'right',
