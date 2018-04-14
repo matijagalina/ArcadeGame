@@ -9,6 +9,15 @@ body {
     align-items: center;
 }
 
+.score {
+    display: flex;
+    justify-content: center;
+}
+
+.score .lifes {
+    margin-right: 30px;
+}
+
 #modal {
     position: absolute;
     top: 25vh;

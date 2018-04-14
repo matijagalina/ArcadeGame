@@ -4,6 +4,7 @@ const $modalTitle = document.querySelector('#modal h3');
 const $modalHistory = document.querySelector('#modal .scoreHistory');
 const $modalStars = document.querySelector('#modal .scoreHistory .stars');
 const $lifeScore = document.querySelector('.lifes');
+const $starsScore = document.querySelector('.starsScore');
 const $modalBtn = document.getElementById('newGameBtn');
 const rowOne = 62;
 const rowTwo = 145;
@@ -129,6 +130,7 @@ class Player {
         if (player.life === 0) {
             $modalTitle.innerHTML = 'YOU HAVE NO LIVES LEFT!';
             $modal.style.display = 'flex';
+            allEnemies = [];
         }
         $lifeScore.innerHTML = 'Life left: ' + player.life;
     }
@@ -147,14 +149,17 @@ class Player {
 
     checkStarPickup() {
         if (
-            (game.starY === this.y - 10) &&
-            ((game.starX > this.x - 70) && (game.starX - this.x < 70))
+            (game.y === this.y - 10) &&
+            ((game.x > this.x - 70) && (game.x - this.x < 70))
         ) {
-            game.starX = game.starX + 101;
-            game.starY = game.starY + 83;
+
+            game.x = game.fields.rowFields[getRandomNum(0,4)];
+            game.y = game.fields.columnFields[getRandomNum(0,2)];
 
             game.starNum++;
+            $starsScore.innerHTML = 'Stars collected: ' + game.starNum;
             sessionStorage.setItem('starNum', game.starNum);
+
         }
     }
 }
@@ -162,14 +167,20 @@ class Player {
 class Game {
 
     constructor() {
+        this.fields = {
+            rowFields : [0, 101, 202, 303, 404],
+            columnFields : [62, 145, 228]
+        }
         this.star = 'images/star.png';
-        this.starX = 202;
-        this.starY = 228;
+        this.x = this.fields.rowFields[getRandomNum(0,4)];
+        this.y = this.fields.columnFields[getRandomNum(0,4)];;
         this.starNum = 0;
+        
+        //this.heart = 'images/heart.png';
     }
 
     render() {
-        ctx.drawImage(Resources.get(this.star), this.starX, this.starY);
+        ctx.drawImage(Resources.get(this.star), this.x, this.y);
     }
 
     keepScore() {
@@ -188,13 +199,15 @@ class Game {
 
 let allEnemies = [];
 const player = new Player();
-
 const game = new Game();
 
 // This restarts the game from inside victory dialog
 $modalBtn.addEventListener('click', function () {
     $modal.style.display = 'none';
     player.y = 404;
+    player.life = 3;
+    $lifeScore.innerHTML = 'Life left: ' + player.life;
+    $starsScore.innerHTML = 'Stars collected: 0';
 
     for (let i = 0; i < 5; i++) {
         allEnemies.push(new Enemy());
