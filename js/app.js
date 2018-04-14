@@ -7,22 +7,22 @@ const rowTwo = 145;
 const rowThree = 228;
 const rows = [rowOne, rowTwo, rowThree];
 
-// helper functions
-
+// helper function
 function getRandomNum(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-let slow = getRandomNum(10, 50);
-let fast = getRandomNum(100, 200);
+let slow = getRandomNum(30, 70);
+let fast = getRandomNum(100, 300);
 
 class Enemy {
     constructor() {
         this.sprite = 'images/enemy-bug.png';
         this.x = 0;
         this.y = this.appendToRow();
+        this.speed = this.calculateSpeed();
     }
 
     // Update the enemy's position, required method for game
@@ -31,7 +31,8 @@ class Enemy {
         // You should multiply any movement by the dt parameter
         // which will ensure the game runs at the same speed for
         // all computers.
-        this.x = this.x + (this.calculateSpeed() * dt);
+
+        this.x = this.x + (this.speed * dt);
         this.handleBorders();
     }
 
@@ -40,12 +41,13 @@ class Enemy {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 
+    // returns random speed for enemies
     calculateSpeed() {
         let speed = (getRandomNum(slow, fast));
         return speed;
     }
 
-    // returns enemies to te start and assigns them a new speed
+    // returns enemies to the start
     handleBorders() {
         if (this.x > 404) {
             this.x = 0;
@@ -53,6 +55,7 @@ class Enemy {
         }
     }
 
+    // returns a random row number
     appendToRow() {
         let row = rows[getRandomNum(0, 2)];
         return row;
@@ -76,6 +79,7 @@ class Player {
         this.checkCollision();
     }
 
+    // defines the key input behaviour
     handleInput(key) {
         if (key === 'up') {
             this.y = this.y - 83;
@@ -108,6 +112,7 @@ class Player {
         modal.style.display = 'block';
     }
 
+    // defines enemy-player collision behaviour
     handleCrash() {
         this.x = 202;
         this.y = 404;
@@ -119,6 +124,7 @@ class Player {
         modal.style.display = 'block';
     }
 
+    // checks if the enemy-player collision has happened
     checkCollision() {
         for (let i = 0; i < allEnemies.length; i++) {
             if (
