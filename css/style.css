@@ -18,6 +18,15 @@ body {
     font-size: 2rem;
 }
 
+.scoreHistory {
+    display: none;
+    flex-direction: column;
+}
+
+.scoreHistory p:first-of-type {
+    margin: 0;
+}
+
 .btn {
     appearance: none;
     cursor: pointer;

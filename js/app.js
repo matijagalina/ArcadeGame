@@ -1,7 +1,10 @@
 // globally accesible variables
-const modal = document.getElementById('modal');
-const modalTitle = document.querySelector('#modal h3');
-const modalBtn = document.getElementById('newGameBtn');
+const $modal = document.getElementById('modal');
+const $modalTitle = document.querySelector('#modal h3');
+const $modalHistory = document.querySelector('#modal .scoreHistory');
+const $modalStars = document.querySelector('#modal .scoreHistory .stars');
+const $lifeScore = document.querySelector('.lifes');
+const $modalBtn = document.getElementById('newGameBtn');
 const rowOne = 62;
 const rowTwo = 145;
 const rowThree = 228;
@@ -67,16 +70,20 @@ class Player {
         this.sprite = 'images/char-boy.png';
         this.x = 202;
         this.y = 404;
+        this.life = 3;
+        this.stars = 0;
     }
 
     update(dt) {
-
+        game.keepScore();
+        game.render();
     }
 
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
         this.handleBorders();
         this.checkCollision();
+        this.checkStarPickup();
     }
 
     // defines the key input behaviour
@@ -109,9 +116,8 @@ class Player {
     handleVictory() {
         allEnemies = [];
 
-        modalTitle.innerHTML = 'YOU HAVE WON!';
-        modal.style.display = 'flex';
-
+        $modalTitle.innerHTML = 'YOU HAVE WON!';
+        $modal.style.display = 'flex';
     }
 
     // defines enemy-player collision behaviour
@@ -119,10 +125,12 @@ class Player {
         this.x = 202;
         this.y = 404;
 
-        allEnemies = [];
-
-        modalTitle.innerHTML = 'YOU HAVE LOST!';
-        modal.style.display = 'flex';
+        player.life--;
+        if (player.life === 0) {
+            $modalTitle.innerHTML = 'YOU HAVE NO LIVES LEFT!';
+            $modal.style.display = 'flex';
+        }
+        $lifeScore.innerHTML = 'Life left: ' + player.life;
     }
 
     // checks if the enemy-player collision has happened
@@ -136,6 +144,42 @@ class Player {
             }
         }
     }
+
+    checkStarPickup() {
+        if (
+            (game.starY === this.y - 10) &&
+            ((game.starX > this.x - 70) && (game.starX - this.x < 70))
+        ) {
+            game.starX = game.starX + 101;
+            game.starY = game.starY + 83;
+
+            game.starNum++;
+            sessionStorage.setItem('starNum', game.starNum);
+        }
+    }
+}
+
+class Game {
+
+    constructor() {
+        this.star = 'images/star.png';
+        this.starX = 202;
+        this.starY = 228;
+        this.starNum = 0;
+    }
+
+    render() {
+        ctx.drawImage(Resources.get(this.star), this.starX, this.starY);
+    }
+
+    keepScore() {
+        if (sessionStorage.getItem('didRender')) {
+            let stars = sessionStorage.getItem('starNum') || 0;
+            $modalHistory.style.display = 'flex';
+            $modalStars.innerHTML = 'Stars: ' + stars;
+        }
+    }
+
 }
 
 // Now instantiate your objects.
@@ -145,14 +189,18 @@ class Player {
 let allEnemies = [];
 const player = new Player();
 
+const game = new Game();
+
 // This restarts the game from inside victory dialog
-modalBtn.addEventListener('click', function () {
-    modal.style.display = 'none';
+$modalBtn.addEventListener('click', function () {
+    $modal.style.display = 'none';
     player.y = 404;
 
     for (let i = 0; i < 5; i++) {
         allEnemies.push(new Enemy());
     }
+
+    sessionStorage.setItem('didRender', true);
 });
 
 // This listens for key presses and sends the keys to your
