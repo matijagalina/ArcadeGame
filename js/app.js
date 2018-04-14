@@ -14,7 +14,7 @@ function getRandomNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-let slow = getRandomNum(30, 70);
+let slow = getRandomNum(40, 70);
 let fast = getRandomNum(100, 300);
 
 class Enemy {
@@ -90,7 +90,6 @@ class Player {
         } else if (key === 'right') {
             this.x = this.x + 101;
         }
-        this.render();
     }
 
     // constricts player movement inside game field
@@ -108,24 +107,26 @@ class Player {
 
     // handles game behaviour when player arrive to the water block
     handleVictory() {
+        allEnemies = [];
+
         modalTitle.innerHTML = 'YOU HAVE WON!';
         modal.style.display = 'flex';
+
     }
 
     // defines enemy-player collision behaviour
     handleCrash() {
         this.x = 202;
         this.y = 404;
-        for (let i = 0; i < allEnemies.length; i++) {
-            allEnemies[i].x = 0;
-        }
+
+        allEnemies = [];
 
         modalTitle.innerHTML = 'YOU HAVE LOST!';
         modal.style.display = 'flex';
     }
 
     // checks if the enemy-player collision has happened
-    checkCollision() {
+    checkCollision(dt) {
         for (let i = 0; i < allEnemies.length; i++) {
             if (
                 (allEnemies[i].y === this.y - 10) &&
@@ -140,18 +141,17 @@ class Player {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-const enemyOne = new Enemy();
-const enemyTwo = new Enemy();
-const enemyThree = new Enemy();
-const allEnemies = [enemyOne, enemyTwo, enemyThree];
+
+let allEnemies = [];
 const player = new Player();
 
 // This restarts the game from inside victory dialog
 modalBtn.addEventListener('click', function () {
     modal.style.display = 'none';
     player.y = 404;
-    for (let i = 0; i < allEnemies.length; i++) {
-        allEnemies[i].x = 0;
+
+    for (let i = 0; i < 5; i++) {
+        allEnemies.push(new Enemy());
     }
 });
 

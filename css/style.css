@@ -3,7 +3,7 @@ body {
 }
 
 .messageContainer {
-    display: none;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -11,9 +11,7 @@ body {
 
 #modal {
     position: absolute;
-    top: 20vh;
-    height: 220px;
-    width: 500px;
+    top: 25vh;
 }
 
 #modal h3 {
