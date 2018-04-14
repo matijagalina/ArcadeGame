@@ -11,10 +11,17 @@ body {
 
 #modal {
     position: absolute;
-    top: 30vh;
+    top: 20vh;
+    height: 220px;
+    width: 500px;
+}
+
+#modal h3 {
+    font-size: 2rem;
 }
 
 .btn {
     appearance: none;
-    cursor: pointer;   
+    cursor: pointer;
+    padding: 20px 30px;
 }

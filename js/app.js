@@ -31,7 +31,6 @@ class Enemy {
         // You should multiply any movement by the dt parameter
         // which will ensure the game runs at the same speed for
         // all computers.
-
         this.x = this.x + (this.speed * dt);
         this.handleBorders();
     }
@@ -47,11 +46,12 @@ class Enemy {
         return speed;
     }
 
-    // returns enemies to the start
+    // returns enemies to the start and defines them new speed
     handleBorders() {
         if (this.x > 404) {
             this.x = 0;
             this.y = this.appendToRow();
+            this.speed = this.calculateSpeed();
         }
     }
 
@@ -109,7 +109,7 @@ class Player {
     // handles game behaviour when player arrive to the water block
     handleVictory() {
         modalTitle.innerHTML = 'YOU HAVE WON!';
-        modal.style.display = 'block';
+        modal.style.display = 'flex';
     }
 
     // defines enemy-player collision behaviour
@@ -121,7 +121,7 @@ class Player {
         }
 
         modalTitle.innerHTML = 'YOU HAVE LOST!';
-        modal.style.display = 'block';
+        modal.style.display = 'flex';
     }
 
     // checks if the enemy-player collision has happened
