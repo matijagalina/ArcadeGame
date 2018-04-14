@@ -75,6 +75,7 @@ class Player {
         this.stars = 0;
     }
 
+    // starts game class methods
     update(dt) {
         game.keepScore();
         game.render();
@@ -147,6 +148,7 @@ class Player {
         }
     }
 
+    //handles star pickup behaviour
     checkStarPickup() {
         if (
             (game.y === this.y - 10) &&
@@ -159,11 +161,11 @@ class Player {
             game.starNum++;
             $starsScore.innerHTML = 'Stars collected: ' + game.starNum;
             sessionStorage.setItem('starNum', game.starNum);
-
         }
     }
 }
 
+// controls game-related aspects
 class Game {
 
     constructor() {
@@ -173,16 +175,18 @@ class Game {
         }
         this.star = 'images/star.png';
         this.x = this.fields.rowFields[getRandomNum(0,4)];
-        this.y = this.fields.columnFields[getRandomNum(0,4)];;
+        this.y = this.fields.columnFields[getRandomNum(0,2)];;
         this.starNum = 0;
         
-        //this.heart = 'images/heart.png';
+         // this.heart = 'images/heart.png';
     }
 
     render() {
         ctx.drawImage(Resources.get(this.star), this.x, this.y);
+        // ctx.drawImage(Resources.get(this.heart), this.fields.rowFields[1], this.fields.columnFields[1]);
     }
 
+    // shows last game stats on the start
     keepScore() {
         if (sessionStorage.getItem('didRender')) {
             let stars = sessionStorage.getItem('starNum') || 0;
@@ -190,7 +194,6 @@ class Game {
             $modalStars.innerHTML = 'Stars: ' + stars;
         }
     }
-
 }
 
 // Now instantiate your objects.
