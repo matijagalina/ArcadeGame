@@ -3,16 +3,13 @@ const $modal = document.getElementById('modal');
 const $modalTitle = document.querySelector('#modal h3');
 const $modalHistory = document.querySelector('#modal .scoreHistory');
 const $modalStars = document.querySelector('#modal .scoreHistory .stars');
+const $modalHighScore = document.querySelector('#modal .highScore');
 const $lifeScore = document.querySelector('.lifes');
 const $starsScore = document.querySelector('.starsScore');
 const $blueGemScore = document.querySelector('.blueGemScore');
 const $greenGemScore = document.querySelector('.greenGemScore');
 const $orangeGemScore = document.querySelector('.orangeGemScore');
 const $modalBtn = document.getElementById('newGameBtn');
-const rowOne = 62;
-const rowTwo = 145;
-const rowThree = 228;
-const rows = [rowOne, rowTwo, rowThree];
 
 // helper function
 function getRandomNum(min, max) {
@@ -64,7 +61,7 @@ class Enemy {
 
     // returns a random row number
     appendToRow() {
-        let row = rows[getRandomNum(0, 2)];
+        let row = game.fields.rowFields[getRandomNum(0, 2)];
         return row;
     }
 }
@@ -75,7 +72,6 @@ class Player {
         this.x = 202;
         this.y = 404;
         this.life = 3;
-        this.stars = 0;
     }
 
     // starts game class methods
@@ -107,6 +103,7 @@ class Player {
     // constricts player movement inside game field
     handleBorders() {
         if (this.y < 0) {
+            this.y = -11;
             this.checkKeyPickup();
         } else if (this.y > 404) {
             this.y = 404;
@@ -136,7 +133,7 @@ class Player {
             $modal.style.display = 'flex';
             allEnemies = [];
         }
-        $lifeScore.innerHTML = 'Life left: ' + player.life;
+        $lifeScore.innerHTML = 'Life left:  ' + player.life;
     }
 
     // checks if the enemy-player collision has happened
@@ -185,11 +182,11 @@ class Game {
             columnFields: [0, 101, 202, 303, 404],
             rowFields: [62, 145, 228],
             endFields: [-21]
-        }
+        };
         this.extras = ['images/star.png', 'images/heart.png', 'images/gem blue.png', 'images/gem green.png', 'images/gem orange.png'];
         this.sprite = this.extras[getRandomNum(0, 4)];
         this.x = this.fields.columnFields[getRandomNum(0, 4)];
-        this.y = this.fields.rowFields[getRandomNum(0, 2)];;
+        this.y = this.fields.rowFields[getRandomNum(0, 2)];
         this.starNum = 0;
         this.blueGemNum = 0;
         this.greenGemNum = 0;
@@ -210,10 +207,24 @@ class Game {
         if (localStorage.getItem('didRender')) {
             let stars = localStorage.getItem('starNum') || 0;
             $modalHistory.style.display = 'flex';
-            $modalStars.innerHTML = 'Stars: ' + stars;
+            $modalStars.innerHTML = stars + '  stars';
+            game.handleHighScore();
+            $modalHighScore.innerHTML = localStorage.getItem('highScore') + '  stars';
         }
     }
 
+    // update high score
+    handleHighScore() {
+        let high_score = localStorage.getItem('highScore');
+        if (high_score === null) {
+            localStorage.setItem('highScore', 0);
+        }
+        if (this.starNum > high_score) {
+            localStorage.setItem('highScore', this.starNum);
+        }
+    }
+
+    // flash body element background red when life lost
     signalLifeLost() {
         document.querySelector('body').style.backgroundColor = '#f92f2f';
         setTimeout(function () {
@@ -225,43 +236,43 @@ class Game {
     incrementCollected() {
         if (game.sprite === 'images/star.png') {
             game.starNum++;
-            $starsScore.innerHTML = 'Stars collected: ' + game.starNum;
+            $starsScore.innerHTML = 'Stars collected:  ' + game.starNum;
             localStorage.setItem('starNum', game.starNum);
         }
 
         if (game.sprite === 'images/heart.png') {
             player.life++;
-            $lifeScore.innerHTML = 'Life left: ' + player.life;
+            $lifeScore.innerHTML = 'Life left:  ' + player.life;
         }
 
         if (game.sprite === 'images/gem blue.png') {
             game.blueGemNum++;
             if (game.blueGemNum === 5) {
                 player.life++;
-                $lifeScore.innerHTML = 'Life left: ' + player.life;
+                $lifeScore.innerHTML = 'Life left:  ' + player.life;
                 game.blueGemNum = 0;
             }
-            $blueGemScore.innerHTML = 'Blue gems: ' + game.blueGemNum;
+            $blueGemScore.innerHTML = 'Blue gems:  ' + game.blueGemNum;
         }
 
         if (game.sprite === 'images/gem green.png') {
             game.greenGemNum++;
             if (game.greenGemNum === 5) {
                 player.life++;
-                $lifeScore.innerHTML = 'Life left: ' + player.life;
+                $lifeScore.innerHTML = 'Life left:  ' + player.life;
                 game.greenGemNum = 0;
             }
-            $greenGemScore.innerHTML = 'Green gems: ' + game.greenGemNum;
+            $greenGemScore.innerHTML = 'Green gems:  ' + game.greenGemNum;
         }
 
         if (game.sprite === 'images/gem orange.png') {
             game.orangeGemNum++;
             if (game.orangeGemNum === 5) {
                 player.life++;
-                $lifeScore.innerHTML = 'Life left: ' + player.life;
+                $lifeScore.innerHTML = 'Life left:  ' + player.life;
                 game.orangeGemNum = 0;
             }
-            $orangeGemScore.innerHTML = 'Orange gems: ' + game.orangeGemNum;
+            $orangeGemScore.innerHTML = 'Orange gems:  ' + game.orangeGemNum;
         }
     }
 }
@@ -279,15 +290,15 @@ $modalBtn.addEventListener('click', function () {
     $modal.style.display = 'none';
     player.y = 404;
     player.life = 3;
+    game.starNum = 0;
+    localStorage.setItem('starNum', game.starNum);
     $lifeScore.innerHTML = 'Life left: ' + player.life;
 
     game.endPointColumn = game.fields.columnFields[getRandomNum(0, 4)];
-    $starsScore.innerHTML = 'Stars collected: 0';
-    $blueGemScore.innerHTML = 'Blue gems: 0';
-    $greenGemScore.innerHTML = 'Green gems: 0';
-    $orangeGemScore.innerHTML = 'Orange gems: 0';
-
-
+    $starsScore.innerHTML = 'Stars collected:  0';
+    $blueGemScore.innerHTML = 'Blue gems:  0';
+    $greenGemScore.innerHTML = 'Green gems:  0';
+    $orangeGemScore.innerHTML = 'Orange gems:  0';
 
     for (let i = 0; i < 5; i++) {
         allEnemies.push(new Enemy());
