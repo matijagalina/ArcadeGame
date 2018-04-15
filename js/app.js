@@ -157,32 +157,7 @@ class Player {
             (game.y === this.y - 10) &&
             ((game.x > this.x - 70) && (game.x - this.x < 70))
         ) {
-
-            if (game.sprite === 'images/star.png') {
-                game.starNum++;
-                $starsScore.innerHTML = 'Stars collected: ' + game.starNum;
-                localStorage.setItem('starNum', game.starNum);
-            }
-
-            if (game.sprite === 'images/heart.png') {
-                player.life++;
-                $lifeScore.innerHTML = 'Life left: ' + player.life;
-            }
-
-            if (game.sprite === 'images/gem blue.png') {
-                game.blueGemNum++;
-                $blueGemScore.innerHTML = 'Blue gems: ' + game.blueGemNum;
-            }
-
-            if (game.sprite === 'images/gem green.png') {
-                game.greenGemNum++;
-                $greenGemScore.innerHTML = 'Green gems: ' + game.greenGemNum;
-            }
-
-            if (game.sprite === 'images/gem orange.png') {
-                game.orangeGemNum++;
-                $orangeGemScore.innerHTML = 'Orange gems: ' + game.orangeGemNum;
-            }
+            game.incrementCollected();
 
             game.sprite = game.extras[getRandomNum(0,4)];
             game.x = game.fields.rowFields[getRandomNum(0,4)];
@@ -219,6 +194,34 @@ class Game {
             let stars = localStorage.getItem('starNum') || 0;
             $modalHistory.style.display = 'flex';
             $modalStars.innerHTML = 'Stars: ' + stars;
+        }
+    }
+
+    incrementCollected() {
+        if (game.sprite === 'images/star.png') {
+            game.starNum++;
+            $starsScore.innerHTML = 'Stars collected: ' + game.starNum;
+            localStorage.setItem('starNum', game.starNum);
+        }
+
+        if (game.sprite === 'images/heart.png') {
+            player.life++;
+            $lifeScore.innerHTML = 'Life left: ' + player.life;
+        }
+
+        if (game.sprite === 'images/gem blue.png') {
+            game.blueGemNum++;
+            $blueGemScore.innerHTML = 'Blue gems: ' + game.blueGemNum;
+        }
+
+        if (game.sprite === 'images/gem green.png') {
+            game.greenGemNum++;
+            $greenGemScore.innerHTML = 'Green gems: ' + game.greenGemNum;
+        }
+
+        if (game.sprite === 'images/gem orange.png') {
+            game.orangeGemNum++;
+            $orangeGemScore.innerHTML = 'Orange gems: ' + game.orangeGemNum;
         }
     }
 }
