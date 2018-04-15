@@ -160,7 +160,7 @@ class Player {
 
             game.starNum++;
             $starsScore.innerHTML = 'Stars collected: ' + game.starNum;
-            sessionStorage.setItem('starNum', game.starNum);
+            localStorage.setItem('starNum', game.starNum);
         }
     }
 }
@@ -188,8 +188,8 @@ class Game {
 
     // shows last game stats on the start
     keepScore() {
-        if (sessionStorage.getItem('didRender')) {
-            let stars = sessionStorage.getItem('starNum') || 0;
+        if (localStorage.getItem('didRender')) {
+            let stars = localStorage.getItem('starNum') || 0;
             $modalHistory.style.display = 'flex';
             $modalStars.innerHTML = 'Stars: ' + stars;
         }
@@ -216,7 +216,7 @@ $modalBtn.addEventListener('click', function () {
         allEnemies.push(new Enemy());
     }
 
-    sessionStorage.setItem('didRender', true);
+    localStorage.setItem('didRender', true);
 });
 
 // This listens for key presses and sends the keys to your
