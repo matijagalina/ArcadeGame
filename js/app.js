@@ -146,6 +146,7 @@ class Player {
                 (allEnemies[i].y === this.y - 10) &&
                 ((allEnemies[i].x > this.x - 65) && (allEnemies[i].x - this.x < 65))
             ) {
+                game.signalLifeLost();
                 this.handleCrash();
             }
         }
@@ -159,9 +160,9 @@ class Player {
         ) {
             game.incrementCollected();
 
-            game.sprite = game.extras[getRandomNum(0,4)];
-            game.x = game.fields.columnFields[getRandomNum(0,4)];
-            game.y = game.fields.rowFields[getRandomNum(0,2)];
+            game.sprite = game.extras[getRandomNum(0, 4)];
+            game.x = game.fields.columnFields[getRandomNum(0, 4)];
+            game.y = game.fields.rowFields[getRandomNum(0, 2)];
         }
     }
 
@@ -181,21 +182,21 @@ class Game {
 
     constructor() {
         this.fields = {
-            columnFields : [0, 101, 202, 303, 404],
-            rowFields : [62, 145, 228],
-            endFields : [-21]
+            columnFields: [0, 101, 202, 303, 404],
+            rowFields: [62, 145, 228],
+            endFields: [-21]
         }
-        this.extras = ['images/star.png', 'images/heart.png', 'images/gem blue.png','images/gem green.png','images/gem orange.png'];
-        this.sprite = this.extras[getRandomNum(0,4)];
-        this.x = this.fields.columnFields[getRandomNum(0,4)];
-        this.y = this.fields.rowFields[getRandomNum(0,2)];;
+        this.extras = ['images/star.png', 'images/heart.png', 'images/gem blue.png', 'images/gem green.png', 'images/gem orange.png'];
+        this.sprite = this.extras[getRandomNum(0, 4)];
+        this.x = this.fields.columnFields[getRandomNum(0, 4)];
+        this.y = this.fields.rowFields[getRandomNum(0, 2)];;
         this.starNum = 0;
         this.blueGemNum = 0;
         this.greenGemNum = 0;
         this.orangeGemNum = 0;
         this.endPoint = 'images/key.png';
         this.endPointRow = this.fields.endFields[0];
-        this.endPointColumn = this.fields.columnFields[getRandomNum(0,4)];
+        this.endPointColumn = this.fields.columnFields[getRandomNum(0, 4)];
     }
 
     // renders collectibles and key
@@ -211,6 +212,13 @@ class Game {
             $modalHistory.style.display = 'flex';
             $modalStars.innerHTML = 'Stars: ' + stars;
         }
+    }
+
+    signalLifeLost() {
+        document.querySelector('body').style.backgroundColor = '#f92f2f';
+        setTimeout(function () {
+            document.querySelector('body').style.backgroundColor = '#1b1b1b';
+        }, 200);
     }
 
     // handles collecting the extra elements, five gems add one life
@@ -273,13 +281,13 @@ $modalBtn.addEventListener('click', function () {
     player.life = 3;
     $lifeScore.innerHTML = 'Life left: ' + player.life;
 
-    game.endPointColumn = game.fields.columnFields[getRandomNum(0,4)];
+    game.endPointColumn = game.fields.columnFields[getRandomNum(0, 4)];
     $starsScore.innerHTML = 'Stars collected: 0';
     $blueGemScore.innerHTML = 'Blue gems: 0';
     $greenGemScore.innerHTML = 'Green gems: 0';
     $orangeGemScore.innerHTML = 'Orange gems: 0';
 
-   
+
 
     for (let i = 0; i < 5; i++) {
         allEnemies.push(new Enemy());
