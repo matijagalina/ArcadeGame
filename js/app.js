@@ -5,6 +5,9 @@ const $modalHistory = document.querySelector('#modal .scoreHistory');
 const $modalStars = document.querySelector('#modal .scoreHistory .stars');
 const $lifeScore = document.querySelector('.lifes');
 const $starsScore = document.querySelector('.starsScore');
+const $blueGemScore = document.querySelector('.blueGemScore');
+const $greenGemScore = document.querySelector('.greenGemScore');
+const $orangeGemScore = document.querySelector('.orangeGemScore');
 const $modalBtn = document.getElementById('newGameBtn');
 const rowOne = 62;
 const rowTwo = 145;
@@ -141,7 +144,7 @@ class Player {
         for (let i = 0; i < allEnemies.length; i++) {
             if (
                 (allEnemies[i].y === this.y - 10) &&
-                ((allEnemies[i].x > this.x - 70) && (allEnemies[i].x - this.x < 70))
+                ((allEnemies[i].x > this.x - 65) && (allEnemies[i].x - this.x < 65))
             ) {
                 this.handleCrash();
             }
@@ -155,12 +158,35 @@ class Player {
             ((game.x > this.x - 70) && (game.x - this.x < 70))
         ) {
 
+            if (game.sprite === 'images/star.png') {
+                game.starNum++;
+                $starsScore.innerHTML = 'Stars collected: ' + game.starNum;
+                localStorage.setItem('starNum', game.starNum);
+            }
+
+            if (game.sprite === 'images/heart.png') {
+                player.life++;
+                $lifeScore.innerHTML = 'Life left: ' + player.life;
+            }
+
+            if (game.sprite === 'images/gem blue.png') {
+                game.blueGemNum++;
+                $blueGemScore.innerHTML = 'Blue gems: ' + game.blueGemNum;
+            }
+
+            if (game.sprite === 'images/gem green.png') {
+                game.greenGemNum++;
+                $greenGemScore.innerHTML = 'Green gems: ' + game.greenGemNum;
+            }
+
+            if (game.sprite === 'images/gem orange.png') {
+                game.orangeGemNum++;
+                $orangeGemScore.innerHTML = 'Orange gems: ' + game.orangeGemNum;
+            }
+
+            game.sprite = game.extras[getRandomNum(0,4)];
             game.x = game.fields.rowFields[getRandomNum(0,4)];
             game.y = game.fields.columnFields[getRandomNum(0,2)];
-
-            game.starNum++;
-            $starsScore.innerHTML = 'Stars collected: ' + game.starNum;
-            localStorage.setItem('starNum', game.starNum);
         }
     }
 }
@@ -173,17 +199,18 @@ class Game {
             rowFields : [0, 101, 202, 303, 404],
             columnFields : [62, 145, 228]
         }
-        this.star = 'images/star.png';
+        this.extras = ['images/star.png', 'images/heart.png', 'images/gem blue.png','images/gem green.png','images/gem orange.png'];
+        this.sprite = this.extras[getRandomNum(0,4)];
         this.x = this.fields.rowFields[getRandomNum(0,4)];
         this.y = this.fields.columnFields[getRandomNum(0,2)];;
         this.starNum = 0;
-        
-         // this.heart = 'images/heart.png';
+        this.blueGemNum = 0;
+        this.greenGemNum = 0;
+        this.orangeGemNum = 0;
     }
 
     render() {
-        ctx.drawImage(Resources.get(this.star), this.x, this.y);
-        // ctx.drawImage(Resources.get(this.heart), this.fields.rowFields[1], this.fields.columnFields[1]);
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 
     // shows last game stats on the start
