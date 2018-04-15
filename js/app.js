@@ -107,7 +107,7 @@ class Player {
     // constricts player movement inside game field
     handleBorders() {
         if (this.y < 0) {
-            this.handleVictory();
+            this.checkKeyPickup();
         } else if (this.y > 404) {
             this.y = 404;
         } else if (this.x < 0) {
@@ -160,8 +160,17 @@ class Player {
             game.incrementCollected();
 
             game.sprite = game.extras[getRandomNum(0,4)];
-            game.x = game.fields.rowFields[getRandomNum(0,4)];
-            game.y = game.fields.columnFields[getRandomNum(0,2)];
+            game.x = game.fields.columnFields[getRandomNum(0,4)];
+            game.y = game.fields.rowFields[getRandomNum(0,2)];
+        }
+    }
+
+    checkKeyPickup() {
+        if (
+            (game.endPointRow === this.y - 10) &&
+            ((game.endPointColumn > this.x - 70) && (game.endPointColumn - this.x < 70))
+        ) {
+            this.handleVictory();
         }
     }
 }
@@ -171,21 +180,26 @@ class Game {
 
     constructor() {
         this.fields = {
-            rowFields : [0, 101, 202, 303, 404],
-            columnFields : [62, 145, 228]
+            columnFields : [0, 101, 202, 303, 404],
+            rowFields : [62, 145, 228],
+            endFields : [-21]
         }
         this.extras = ['images/star.png', 'images/heart.png', 'images/gem blue.png','images/gem green.png','images/gem orange.png'];
         this.sprite = this.extras[getRandomNum(0,4)];
-        this.x = this.fields.rowFields[getRandomNum(0,4)];
-        this.y = this.fields.columnFields[getRandomNum(0,2)];;
+        this.x = this.fields.columnFields[getRandomNum(0,4)];
+        this.y = this.fields.rowFields[getRandomNum(0,2)];;
         this.starNum = 0;
         this.blueGemNum = 0;
         this.greenGemNum = 0;
         this.orangeGemNum = 0;
+        this.endPoint = 'images/key.png';
+        this.endPointRow = this.fields.endFields[0];
+        this.endPointColumn = this.fields.columnFields[getRandomNum(0,4)];
     }
 
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+        ctx.drawImage(Resources.get(this.endPoint), this.endPointColumn, this.endPointRow);
     }
 
     // shows last game stats on the start
@@ -211,16 +225,31 @@ class Game {
 
         if (game.sprite === 'images/gem blue.png') {
             game.blueGemNum++;
+            if (game.blueGemNum === 5) {
+                player.life++;
+                $lifeScore.innerHTML = 'Life left: ' + player.life;
+                game.blueGemNum = 0;
+            }
             $blueGemScore.innerHTML = 'Blue gems: ' + game.blueGemNum;
         }
 
         if (game.sprite === 'images/gem green.png') {
             game.greenGemNum++;
+            if (game.greenGemNum === 5) {
+                player.life++;
+                $lifeScore.innerHTML = 'Life left: ' + player.life;
+                game.greenGemNum = 0;
+            }
             $greenGemScore.innerHTML = 'Green gems: ' + game.greenGemNum;
         }
 
         if (game.sprite === 'images/gem orange.png') {
             game.orangeGemNum++;
+            if (game.orangeGemNum === 5) {
+                player.life++;
+                $lifeScore.innerHTML = 'Life left: ' + player.life;
+                game.orangeGemNum = 0;
+            }
             $orangeGemScore.innerHTML = 'Orange gems: ' + game.orangeGemNum;
         }
     }
@@ -241,8 +270,11 @@ $modalBtn.addEventListener('click', function () {
     player.life = 3;
     $lifeScore.innerHTML = 'Life left: ' + player.life;
     $starsScore.innerHTML = 'Stars collected: 0';
+    $blueGemScore.innerHTML = 'Blue gems: 0';
+    $greenGemScore.innerHTML = 'Green gems: 0';
+    $orangeGemScore.innerHTML = 'Orange gems: 0';
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 2; i++) {
         allEnemies.push(new Enemy());
     }
 

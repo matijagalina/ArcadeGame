@@ -1,5 +1,6 @@
 body {
     text-align: center;
+    background-color: #1b1b1b;
 }
 
 .messageContainer {
@@ -16,6 +17,26 @@ body {
 
 .score h4 {
     margin-right: 30px;
+}
+
+.score .lifes {
+    color: red;
+}
+
+.score .starsScore {
+    color: yellow;
+}
+
+.score .blueGemScore {
+    color: blue;
+}
+
+.score .greenGemScore {
+    color: green;
+}
+
+.score .orangeGemScore {
+    color: orange;
 }
 
 #modal {
