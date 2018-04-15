@@ -165,6 +165,7 @@ class Player {
         }
     }
 
+    // checks if the player has collected key and won the game
     checkKeyPickup() {
         if (
             (game.endPointRow === this.y - 10) &&
@@ -197,6 +198,7 @@ class Game {
         this.endPointColumn = this.fields.columnFields[getRandomNum(0,4)];
     }
 
+    // renders collectibles and key
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
         ctx.drawImage(Resources.get(this.endPoint), this.endPointColumn, this.endPointRow);
@@ -211,6 +213,7 @@ class Game {
         }
     }
 
+    // handles collecting the extra elements, five gems add one life
     incrementCollected() {
         if (game.sprite === 'images/star.png') {
             game.starNum++;
@@ -274,7 +277,7 @@ $modalBtn.addEventListener('click', function () {
     $greenGemScore.innerHTML = 'Green gems: 0';
     $orangeGemScore.innerHTML = 'Orange gems: 0';
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 5; i++) {
         allEnemies.push(new Enemy());
     }
 
