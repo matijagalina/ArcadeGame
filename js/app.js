@@ -114,7 +114,7 @@ class Player {
         }
     }
 
-    // handles game behaviour when player arrive to the water block
+    // handles game behaviour when player arrive to the key
     handleVictory() {
         allEnemies = [];
 
