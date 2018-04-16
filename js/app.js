@@ -11,15 +11,15 @@ const $greenGemScore = document.querySelector('.greenGemScore');
 const $orangeGemScore = document.querySelector('.orangeGemScore');
 const $modalBtn = document.getElementById('newGameBtn');
 
+let slow = getRandomNum(40, 70);
+let fast = getRandomNum(100, 300);
+
 // helper function
 function getRandomNum(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
-let slow = getRandomNum(40, 70);
-let fast = getRandomNum(100, 300);
 
 class Enemy {
     constructor() {
@@ -80,11 +80,12 @@ class Player {
         game.render();
     }
 
+    // renders the player and checks for borders, pickup or crash
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
         this.handleBorders();
         this.checkCollision();
-        this.checkStarPickup();
+        this.checkElementPickup();
     }
 
     // defines the key input behaviour
@@ -114,28 +115,6 @@ class Player {
         }
     }
 
-    // handles game behaviour when player arrive to the key
-    handleVictory() {
-        allEnemies = [];
-
-        $modalTitle.innerHTML = 'YOU HAVE WON!';
-        $modal.style.display = 'flex';
-    }
-
-    // defines enemy-player collision behaviour
-    handleCrash() {
-        this.x = 202;
-        this.y = 404;
-
-        player.life--;
-        if (player.life === 0) {
-            $modalTitle.innerHTML = 'YOU HAVE NO LIVES LEFT!';
-            $modal.style.display = 'flex';
-            allEnemies = [];
-        }
-        $lifeScore.innerHTML = 'Life left:  ' + player.life;
-    }
-
     // checks if the enemy-player collision has happened
     checkCollision(dt) {
         for (let i = 0; i < allEnemies.length; i++) {
@@ -149,8 +128,23 @@ class Player {
         }
     }
 
+    // defines enemy-player collision behaviour
+    handleCrash() {
+        this.x = 202;
+        this.y = 404;
+
+        player.life--;
+        $lifeScore.innerHTML = 'Life left: ' + player.life;
+
+        if (player.life === 0) {
+            $modalTitle.innerHTML = 'YOU HAVE NO LIVES LEFT!';
+            $modal.style.display = 'flex';
+            allEnemies = [];
+        }
+    }
+
     //handles star pickup behaviour
-    checkStarPickup() {
+    checkElementPickup() {
         if (
             (game.y === this.y - 10) &&
             ((game.x > this.x - 70) && (game.x - this.x < 70))
@@ -169,7 +163,7 @@ class Player {
             (game.endPointRow === this.y - 10) &&
             ((game.endPointColumn > this.x - 70) && (game.endPointColumn - this.x < 70))
         ) {
-            this.handleVictory();
+            game.handleVictory();
         }
     }
 }
@@ -183,7 +177,13 @@ class Game {
             rowFields: [62, 145, 228],
             endFields: [-21]
         };
-        this.extras = ['images/star.png', 'images/heart.png', 'images/gem blue.png', 'images/gem green.png', 'images/gem orange.png'];
+        this.extras = [
+            'images/star.png',
+            'images/heart.png',
+            'images/gem blue.png',
+            'images/gem green.png',
+            'images/gem orange.png'
+        ];
         this.sprite = this.extras[getRandomNum(0, 4)];
         this.x = this.fields.columnFields[getRandomNum(0, 4)];
         this.y = this.fields.rowFields[getRandomNum(0, 2)];
@@ -207,10 +207,18 @@ class Game {
         if (localStorage.getItem('didRender')) {
             let stars = localStorage.getItem('starNum') || 0;
             $modalHistory.style.display = 'flex';
-            $modalStars.innerHTML = stars + '  stars';
+            $modalStars.innerHTML = stars + ' stars';
             game.handleHighScore();
-            $modalHighScore.innerHTML = localStorage.getItem('highScore') + '  stars';
+            $modalHighScore.innerHTML = localStorage.getItem('highScore') + ' stars';
         }
+    }
+
+    // handles game behaviour when player arrive to the key
+    handleVictory() {
+        allEnemies = [];
+
+        $modalTitle.innerHTML = 'YOU HAVE WON!';
+        $modal.style.display = 'flex';
     }
 
     // update high score
@@ -236,43 +244,43 @@ class Game {
     incrementCollected() {
         if (game.sprite === 'images/star.png') {
             game.starNum++;
-            $starsScore.innerHTML = 'Stars collected:  ' + game.starNum;
+            $starsScore.innerHTML = 'Stars collected: ' + game.starNum;
             localStorage.setItem('starNum', game.starNum);
         }
 
         if (game.sprite === 'images/heart.png') {
             player.life++;
-            $lifeScore.innerHTML = 'Life left:  ' + player.life;
+            $lifeScore.innerHTML = 'Life left: ' + player.life;
         }
 
         if (game.sprite === 'images/gem blue.png') {
             game.blueGemNum++;
             if (game.blueGemNum === 5) {
                 player.life++;
-                $lifeScore.innerHTML = 'Life left:  ' + player.life;
+                $lifeScore.innerHTML = 'Life left: ' + player.life;
                 game.blueGemNum = 0;
             }
-            $blueGemScore.innerHTML = 'Blue gems:  ' + game.blueGemNum;
+            $blueGemScore.innerHTML = 'Blue gems: ' + game.blueGemNum;
         }
 
         if (game.sprite === 'images/gem green.png') {
             game.greenGemNum++;
             if (game.greenGemNum === 5) {
                 player.life++;
-                $lifeScore.innerHTML = 'Life left:  ' + player.life;
+                $lifeScore.innerHTML = 'Life left: ' + player.life;
                 game.greenGemNum = 0;
             }
-            $greenGemScore.innerHTML = 'Green gems:  ' + game.greenGemNum;
+            $greenGemScore.innerHTML = 'Green gems: ' + game.greenGemNum;
         }
 
         if (game.sprite === 'images/gem orange.png') {
             game.orangeGemNum++;
             if (game.orangeGemNum === 5) {
                 player.life++;
-                $lifeScore.innerHTML = 'Life left:  ' + player.life;
+                $lifeScore.innerHTML = 'Life left: ' + player.life;
                 game.orangeGemNum = 0;
             }
-            $orangeGemScore.innerHTML = 'Orange gems:  ' + game.orangeGemNum;
+            $orangeGemScore.innerHTML = 'Orange gems: ' + game.orangeGemNum;
         }
     }
 }
@@ -295,10 +303,10 @@ $modalBtn.addEventListener('click', function () {
     $lifeScore.innerHTML = 'Life left: ' + player.life;
 
     game.endPointColumn = game.fields.columnFields[getRandomNum(0, 4)];
-    $starsScore.innerHTML = 'Stars collected:  0';
-    $blueGemScore.innerHTML = 'Blue gems:  0';
-    $greenGemScore.innerHTML = 'Green gems:  0';
-    $orangeGemScore.innerHTML = 'Orange gems:  0';
+    $starsScore.innerHTML = 'Stars collected: 0';
+    $blueGemScore.innerHTML = 'Blue gems: 0';
+    $greenGemScore.innerHTML = 'Green gems: 0';
+    $orangeGemScore.innerHTML = 'Orange gems: 0';
 
     for (let i = 0; i < 5; i++) {
         allEnemies.push(new Enemy());
