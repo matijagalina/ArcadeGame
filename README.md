@@ -14,7 +14,7 @@ To stop you from fulfilling that goal there are five bugs which will be crossing
 At the start the player has three lifes which he can earn more by collecting the red heart symbols or by collecting five gems of the same colors. The number of the gems, hearts, stars and lifes are displayed above the playing ground.
 When you lose all the lifes the game is lost.
 
-You can also collect stars which count to you high score. At the beggining of every game (except the first one ever) you will be reminded how much stars did you collect last time and which is your high score.
+You can also collect stars which count to your high score. At the beggining of every game (except the first one ever) you will be reminded how much stars did you collect last time and which is your high score.
 
 When you win or lose game the modal window will appear with informations about the game and the button through you can start a new one.
 
