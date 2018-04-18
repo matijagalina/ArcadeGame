@@ -178,11 +178,11 @@ class Game {
             endFields: [-21]
         };
         this.extras = [
-            'images/star.png',
-            'images/heart.png',
-            'images/gem blue.png',
-            'images/gem green.png',
-            'images/gem orange.png'
+            'images/Star.png',
+            'images/Heart.png',
+            'images/Gem Blue.png',
+            'images/Gem Green.png',
+            'images/Gem Orange.png'
         ];
         this.sprite = this.extras[getRandomNum(0, 4)];
         this.x = this.fields.columnFields[getRandomNum(0, 4)];
@@ -191,7 +191,7 @@ class Game {
         this.blueGemNum = 0;
         this.greenGemNum = 0;
         this.orangeGemNum = 0;
-        this.endPoint = 'images/key.png';
+        this.endPoint = 'images/Key.png';
         this.endPointRow = this.fields.endFields[0];
         this.endPointColumn = this.fields.columnFields[getRandomNum(0, 4)];
     }
