@@ -242,18 +242,18 @@ class Game {
 
     // handles collecting the extra elements, five gems add one life
     incrementCollected() {
-        if (game.sprite === 'images/star.png') {
+        if (game.sprite === 'images/Star.png') {
             game.starNum++;
             $starsScore.innerHTML = 'Stars collected: ' + game.starNum;
             localStorage.setItem('starNum', game.starNum);
         }
 
-        if (game.sprite === 'images/heart.png') {
+        if (game.sprite === 'images/Heart.png') {
             player.life++;
             $lifeScore.innerHTML = 'Life left: ' + player.life;
         }
 
-        if (game.sprite === 'images/gem blue.png') {
+        if (game.sprite === 'images/Gem Blue.png') {
             game.blueGemNum++;
             if (game.blueGemNum === 5) {
                 player.life++;
@@ -263,7 +263,7 @@ class Game {
             $blueGemScore.innerHTML = 'Blue gems: ' + game.blueGemNum;
         }
 
-        if (game.sprite === 'images/gem green.png') {
+        if (game.sprite === 'images/Gem Green.png') {
             game.greenGemNum++;
             if (game.greenGemNum === 5) {
                 player.life++;
@@ -273,7 +273,7 @@ class Game {
             $greenGemScore.innerHTML = 'Green gems: ' + game.greenGemNum;
         }
 
-        if (game.sprite === 'images/gem orange.png') {
+        if (game.sprite === 'images/Gem Orange.png') {
             game.orangeGemNum++;
             if (game.orangeGemNum === 5) {
                 player.life++;
