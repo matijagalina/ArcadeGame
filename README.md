@@ -4,7 +4,10 @@ Arcade Game (Frogger Clone)
 **HOW TO RUN**
 
 To run this game you should have a browser who fully support canvas html5 element (check it here: https://caniuse.com/#search=canvas) and ES6 Javascript class features (check it here: https://caniuse.com/#search=es6%20class ). There is no mobile version of this game (you can play it only with keyboard) so be sure you are on desktop computer or laptop.
+
 The game is accesible from this url: https://matijagalina.github.io/ArcadeGame/
+You can also run this game locally by downloading all the files and folders from this repo by clicking on the button *Clone or download* on the main page of the repo (https://github.com/matijagalina/ArcadeGame) and selecting the *Download ZIP* options.
+Unpack the ZIP to your selected destination (ex. Documents) and run the game by opening *index.html* file in your browser.
 
 **HOW TO PLAY**
 
